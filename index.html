@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="main.css" rel="stylesheet" />
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap core CSS -->
+    <link
+      href="bootstrap/site/assets/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap icons CSS -->
+    <link href="node_modules/bootstrap-icons/font/bootstrap-icons.scss" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="node_modules\bootstrap-icons\font\bootstrap-icons.css"
+    />
+    <!-- Custom styles for this template -->
+    <link href="css/headers.css" rel="stylesheet" />
+    <link href="css/footers.css" rel="stylesheet" />
+    <link href="css/heroes.css" rel="stylesheet" />
+
+    <!-- --------------------------------------------------------------------------- -->
+
+    <script type="text/javascript">
+      function chargerCookies() {
+        var savedTasks = window.localStorage.getItem("tasks");
+        alert("chargement");
+
+        var curvalue = "";
+        alert(savedTasks);
+        var container = true;
+        var i = 5;
+
+        if (savedTasks != null) {
+          while (continuer) {
+            if (savedTasks[i] == "&") {
+              alert(curvalue);
+              newElement(curvalue, true);
+              curvalue = "";
+              i++;
+            } else {
+              if ((curvalue = " ")) {
+                continuer = false;
+              } else {
+                curvalue = curvalue + savedTasks[i];
+                i++;
+              }
+            }
+          }
+        }
+      }
+
+      function clearCookies() {
+        localStorage.removeItem("tasks");
+        alert("cleared");
+      }
+
+      var myNodelist = document.getElementsByTagName("LI");
+      var i;
+      for (i = 0; i < myNodelist.length; i++) {
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        myNodelist[i].appendChild(span);
+      }
+
+      // Click on a close button to hide the current list item
+      var close = document.getElementsByClassName("close");
+      var i;
+      for (i = 0; i < close.length; i++) {
+        close[i].onclick = function () {
+          var div = this.parentElement;
+          div.style.display = "none";
+        };
+      }
+
+      // Add a "checked" symbol when clicking on a list item
+      var list = document.querySelector("ul");
+      list.addEventListener(
+        "click",
+        function (ev) {
+          if (ev.target.tagName === "LI") {
+            ev.target.classList.toggle("checked");
+          }
+        },
+        false
+      );
+
+      // Create a new list item when clicking on the "Add" button
+      function newElement(cookie, trigger) {
+        var li = document.createElement("li");
+        if (trigger) {
+          var inputValue = cookie;
+        } else {
+          var inputValue = document.getElementById("myInput").value;
+        }
+        var t = document.createTextNode(inputValue);
+        li.appendChild(t);
+        if (inputValue === "") {
+          alert("You must write something!");
+        } else {
+          document.getElementById("list").appendChild(li);
+          //local storage if not from trigger
+          if (!trigger) {
+            window.localStorage.setItem(
+              "tasks",
+              window.localStorage.getItem("tasks") + "&" + inputValue
+            );
+          }
+        }
+        document.getElementById("myInput").value = "";
+
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        li.appendChild(span);
+
+        for (i = 0; i < close.length; i++) {
+          close[i].onclick = function () {
+            var div = this.parentElement;
+            div.style.display = "none";
+          };
+        }
+      }
+    </script>
+    <!-- --------------------------------------------------------------------------- -->
+  </head>
+
+  <body>
+    <container class="text-center">
+      <div id="myDIV" class="header">
+        <h2 style="margin: 5px">My To Do List</h2>
+        <input type="text" id="myInput" placeholder="type a thing to do..." />
+        <button onclick="newElement()" class="btn btn-success">
+          save for to do
+        </button>
+        <button onclick="clearCookies()" class="btn btn-danger">
+          clear cache
+        </button>
+        <button onclick="chargerCookies()" class="btn btn-warning" disabled>
+          load cache
+        </button>
+      </div>
+    </container>
+
+    <ul id="list"></ul>
+  </body>
+</html>
